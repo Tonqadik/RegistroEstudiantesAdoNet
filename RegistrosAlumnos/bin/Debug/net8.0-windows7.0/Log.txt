@@ -1,0 +1,2 @@
+11/25/2025 2:01:03 PM -INFO-  Programa iniciado
+11/25/2025 2:01:04 PM -INFO-  Tabla grid de estudiantes inicializada

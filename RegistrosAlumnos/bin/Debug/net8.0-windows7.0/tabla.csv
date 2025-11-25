@@ -1,0 +1,4 @@
+Id,Nombre,Cedula,Carrera,Semestre,Jornada,Usuario,Contrasena,RecibirNotificaciones,FechaRegistro,
+7,juan,8-879-887,Ciencias de la Computación,Verano,Matutino,juan8-879-887,holamundo,False,11/23/2025 7:09:56 PM,
+8,tomads,5-656-54656,Redes Informáticas,I,Vesperino,tomads5-656-54656,hyd,False,11/23/2025 7:10:22 PM,
+9,lorren,1-111-1111,Redes Informáticas,Verano,Vesperino,lorren1-111-1111,1,False,11/23/2025 7:11:05 PM,
