@@ -124,10 +124,10 @@
             // 
             groupBox1.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             groupBox1.Controls.Add(TableGridAlumnos);
-            groupBox1.Location = new Point(341, 35);
+            groupBox1.Location = new Point(385, 35);
             groupBox1.Margin = new Padding(0);
             groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(778, 616);
+            groupBox1.Size = new Size(672, 616);
             groupBox1.TabIndex = 2;
             groupBox1.TabStop = false;
             groupBox1.Text = "Lista de estudiantes";
@@ -143,13 +143,14 @@
             TableGridAlumnos.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             TableGridAlumnos.BackgroundColor = SystemColors.ControlLight;
             TableGridAlumnos.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            TableGridAlumnos.Location = new Point(6, 19);
+            TableGridAlumnos.Dock = DockStyle.Fill;
+            TableGridAlumnos.Location = new Point(3, 21);
             TableGridAlumnos.Name = "TableGridAlumnos";
             TableGridAlumnos.ReadOnly = true;
             TableGridAlumnos.RowHeadersWidth = 51;
             TableGridAlumnos.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             TableGridAlumnos.ShowEditingIcon = false;
-            TableGridAlumnos.Size = new Size(677, 558);
+            TableGridAlumnos.Size = new Size(666, 592);
             TableGridAlumnos.TabIndex = 1;
             TableGridAlumnos.CellClick += TableGridAlumnos_CellClick;
             // 
@@ -368,6 +369,7 @@
             BoxCedula.Size = new Size(125, 25);
             BoxCedula.TabIndex = 5;
             BoxCedula.TextChanged += BoxCedula_TextChanged;
+            BoxCedula.KeyDown += BoxCedula_KeyDown;
             BoxCedula.KeyPress += BoxCedula_KeyPress;
             BoxCedula.Validating += BoxCedula_Validating;
             // 
@@ -613,7 +615,7 @@
             groupBox2.Location = new Point(0, 0);
             groupBox2.Name = "groupBox2";
             groupBox2.Padding = new Padding(20, 10, 20, 10);
-            groupBox2.Size = new Size(1140, 691);
+            groupBox2.Size = new Size(1078, 691);
             groupBox2.TabIndex = 4;
             groupBox2.TabStop = false;
             groupBox2.Text = "n";
@@ -625,7 +627,7 @@
             MenuToolbar.Items.AddRange(new ToolStripItem[] { archivoMenuToolbarItem });
             MenuToolbar.Location = new Point(0, 0);
             MenuToolbar.Name = "MenuToolbar";
-            MenuToolbar.Size = new Size(1140, 28);
+            MenuToolbar.Size = new Size(1078, 28);
             MenuToolbar.TabIndex = 4;
             MenuToolbar.Text = "menuStrip1";
             // 
@@ -773,7 +775,7 @@
             AutoScaleDimensions = new SizeF(8F, 18F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.Window;
-            ClientSize = new Size(1140, 691);
+            ClientSize = new Size(1078, 691);
             Controls.Add(MenuToolbar);
             Controls.Add(groupBox2);
             Font = new Font("Consolas", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);

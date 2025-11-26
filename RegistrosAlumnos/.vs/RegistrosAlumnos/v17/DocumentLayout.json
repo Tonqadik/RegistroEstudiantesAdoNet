@@ -5,6 +5,10 @@
     {
       "AbsoluteMoniker": "D:0:0:{F496E905-5609-4B3F-9209-100E65FC3579}|RegistrosAlumnos.csproj|c:\\c#proyectos\\registroestudiantesadonet\\registrosalumnos\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{F496E905-5609-4B3F-9209-100E65FC3579}|RegistrosAlumnos.csproj|solutionrelative:form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F496E905-5609-4B3F-9209-100E65FC3579}|RegistrosAlumnos.csproj|c:\\c#proyectos\\registroestudiantesadonet\\registrosalumnos\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{F496E905-5609-4B3F-9209-100E65FC3579}|RegistrosAlumnos.csproj|solutionrelative:form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     }
   ],
   "DocumentGroupContainers": [
@@ -28,10 +32,22 @@
               "RelativeDocumentMoniker": "Form1.cs",
               "ToolTip": "C:\\c#proyectos\\RegistroEstudiantesAdoNet\\RegistrosAlumnos\\Form1.cs",
               "RelativeToolTip": "Form1.cs",
-              "ViewState": "AgIAABYAAAAAAAAAAAAQwCQAAAAmAAAAAAAAAA==",
+              "ViewState": "AgIAABoAAAAAAAAAAAAAACUAAAAMAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-25T19:07:42.534Z",
+              "WhenOpened": "2025-11-26T15:40:46.645Z",
               "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Form1.cs [Design]",
+              "DocumentMoniker": "C:\\c#proyectos\\RegistroEstudiantesAdoNet\\RegistrosAlumnos\\Form1.cs",
+              "RelativeDocumentMoniker": "Form1.cs",
+              "ToolTip": "C:\\c#proyectos\\RegistroEstudiantesAdoNet\\RegistrosAlumnos\\Form1.cs [Design]",
+              "RelativeToolTip": "Form1.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T15:40:35.69Z",
+              "EditorCaption": " [Design]"
             }
           ]
         }

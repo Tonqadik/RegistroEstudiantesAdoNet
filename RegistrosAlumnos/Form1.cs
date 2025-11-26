@@ -1,7 +1,10 @@
 using Microsoft.Data.SqlClient;
 using Microsoft.Reporting.WinForms;
+using System.ComponentModel.Design;
 using System.Data;
 using System.Diagnostics;
+using System.Text.RegularExpressions;
+using System.Windows.Forms;
 using LocalReport = Microsoft.Reporting.WinForms.LocalReport;
 using ReportDataSource = Microsoft.Reporting.WinForms.ReportDataSource;
 using ReportParameter = Microsoft.Reporting.WinForms.ReportParameter;
@@ -20,7 +23,7 @@ namespace RegistrosAlumnos
     public partial class Form1 : Form
     {
         ConeccionSql conn = new ConeccionSql();
-        List<string> cedulas = new List<string>();
+        List<string> cedulas = new List<string>(); // La lista de cedulas es utilizada para buscar un estudiante en especifico si se selecciona una fila
         string codigoProfesor = "admin123";
 
         public Form1()
@@ -32,7 +35,7 @@ namespace RegistrosAlumnos
         private void Form1_Load(object sender, EventArgs e)
         {
             Log.IniciarLog();
-            crearInputBoxInicio();           
+            crearInputBoxInicio();
             comboBoxCarrera.SelectedIndex = 0;
             this.KeyPreview = true; // Permite que los eventos primeros pasen por el forms
 
@@ -60,7 +63,8 @@ namespace RegistrosAlumnos
             }
         }
 
-        public bool crearInputBoxValidar()
+        // El método se encarga de validar si todos los campos están o no vacíos, en caso de estar uno, entonces retorna false, en caso contraio true,
+        public bool crearInputBoxValidar() 
         {
             Log.AddLinea("Iniciando comprobaciones de los campos");
             bool validado = (
@@ -85,13 +89,6 @@ namespace RegistrosAlumnos
             return validado;
         }
 
-        private void inicializarTabla()
-        {
-            cedulas.Clear();
-            Log.AddLinea("Tabla grid de estudiantes inicializada");
-            
-            TableGridAlumnos.DataSource = conn.obtenerAlumnos();
-        }
 
         //********************** EVENTOS DE LOS BOTONES DEL FORMS ******************
         private void limpiarForm()
@@ -123,6 +120,7 @@ namespace RegistrosAlumnos
             eliminarAlumno();
         }
 
+        // Toolbar para salir de la app
         private void salirMenuToolbarItem_Click(object sender, EventArgs e)
         {
             conn.cerrarBaseDeDatos();
@@ -130,35 +128,81 @@ namespace RegistrosAlumnos
             Application.Exit();
         }
 
+        // Toolbar para guardar alumno
         private void guardarMenuToolbarItem_Click(object sender, EventArgs e)
         {
             guardarAlumno();
         }
 
+        // Toolbar para eliminar alumno
         private void eliminarToolStripMenuItem_Click(object sender, EventArgs e)
         {
             eliminarAlumno();
 
         }
+
+        // Toolbar para editar alumno
         private void editarToolStripMenuItem_Click(object sender, EventArgs e)
         {
             editarAlumno();
         }
 
+        // Toolbar para hacer un nuevo alumno
         private void nuevoMenuToolbarItem_Click(object sender, EventArgs e)
         {
             limpiarForm();
         }
 
+        // Método que lee la base de datos, y añade la lista de alumnos como el DataSource de la tabla (Este solo se llama al principio)
+        private void inicializarTabla()
+        {
+            cedulas.Clear();
+            Log.AddLinea("Tabla grid de estudiantes inicializada");
+
+            TableGridAlumnos.DataSource = conn.obtenerAlumnos();
+        }
+
+        // Método para guardar que guarda toda la información del alumno para enviarla al ADO.Net
+        private void guardarAlumno()
+        {
+            try {
+                // Válida que no haya campos vacíos
+                if (!crearInputBoxValidar()) { return; } 
+                var id = conn.obtenerAlumnos().Count; 
+                string jornada = radMatutino.Checked ? "Matutino" : "Vesperino"; // Obtiene la jornada seleccionada
+                string semestre = "";
+                if (radISemestre.Checked) { semestre = "I"; } else { if (radIISemestre.Checked) { semestre = "II"; } else { semestre = "Verano"; } } // Obtiene el semestre seleccionado
+                BoxID.Text = (id + 1).ToString(); // Cambia el id al siguiente
+
+                // Se crea un objeto de alumno el cuál se envia al Ado.Net
+                Alumno al = new(id.ToString(), BoxNombre.Text, BoxCedula.Text, comboBoxCarrera.Text, semestre, jornada, BoxUsuario.Text, BoxContrasena.Text, checkNotificaciones.Checked);
+                conn.anadirAlumno(al); 
+                cedulas.Add(al.Cedula);
+                MessageBox.Show("Estudiante guardado.", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (InvalidOperationException ep)
+            {
+                MessageBox.Show("Ha ocurrido una operación inválida.\nNo se pudo eliminar al estudiante.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ha ocurrido un error.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        // Método para eliminar el alumno 
         private void eliminarAlumno()
         {
             try
             {
+                // En caso de que el estudiante no exista, entonces da un mensaje de error
                 if (!conn.existeEstudiante(BoxCedula.Text)) { MessageBox.Show("El estudiante no existe.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning); return; }
+                // Se muestra un mensaje de confirmación para eliminar el estudiante
                 if (MessageBox.Show($"Estás seguro que deseas eliminar el estudiante con cédula {BoxCedula.Text}?.", "", MessageBoxButtons.YesNo, MessageBoxIcon.Information) != DialogResult.Yes) { return; }
+                // Se envía la cédula del estudiante a eliminar
                 conn.eliminarAlumno(BoxCedula.Text);
                 MessageBox.Show("Se elimino el estudiante.", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                recargarListBox();
+                recargarTabla(); // Se recarfa la tabla
                 limpiarForm();
             }
             catch (InvalidOperationException ep)
@@ -171,34 +215,26 @@ namespace RegistrosAlumnos
             }
         }
 
-        private void guardarAlumno()
-        {
-            if (!crearInputBoxValidar()) { return; }
-            var id = conn.obtenerAlumnos().Count;
-            string jornada = radMatutino.Checked ? "Matutino" : "Vesperino";
-            string semestre = "";
-            if (radISemestre.Checked) { semestre = "I"; } else { if (radIISemestre.Checked) { semestre = "II"; } else { semestre = "Verano"; } }
-            BoxID.Text = (id + 1).ToString();
-            Alumno al = new(id.ToString(), BoxNombre.Text, BoxCedula.Text, comboBoxCarrera.Text, semestre, jornada, BoxUsuario.Text, BoxContrasena.Text, checkNotificaciones.Checked);
-            conn.anadirAlumno(al);
-            cedulas.Add(al.Cedula);
-            MessageBox.Show("Estudiante guardado.", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-        }
 
         private void editarAlumno()
         {
             try
             {
-                if (!crearInputBoxValidar()) { return; }
+                // Válida que no haya campos vacíos
+                if (!crearInputBoxValidar()) { return; } 
+                // En caso de que el estudiante no exista, entonces da un mensaje de error
                 if (!conn.existeEstudiante(BoxCedula.Text)) { MessageBox.Show("El estudiante no existe.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning); return; }
                 string jornada = radMatutino.Checked ? "Matutino" : "Vesperino";
                 string semestre = "";
                 if (radISemestre.Checked) { semestre = "I"; } else { if (radIISemestre.Checked) { semestre = "II"; } else { semestre = "Verano"; } }
+                
+                // Se crea un objeto de alumno el cuál se envia al Ado.Net
                 Alumno al = new("", BoxNombre.Text, BoxCedula.Text, comboBoxCarrera.Text, semestre, jornada, BoxUsuario.Text, BoxContrasena.Text, checkNotificaciones.Checked);
+                // Se envía el objeto al Ado.Net
                 conn.modificarAlumno(al);
                 MessageBox.Show("Se modifico el estudiante.", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                recargarListBox();
+                recargarTabla();
             }
             catch (InvalidOperationException ep)
             {
@@ -238,18 +274,24 @@ namespace RegistrosAlumnos
 
         private void rangoFechasToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            // Se crea un datepickerDialog personalizado
+            // Se crea un calendarDialog personalizado
             MonthCalendar calendar = new MonthCalendar();
             Button okButton = new Button();
             Button cancelButton = new Button();
+            Label label = new Label();
             Form f = new Form();
             f.Size = new Size(350, 350);
             f.Controls.Add(calendar);
             f.Controls.Add(okButton);
             f.Controls.Add(cancelButton);
+            f.Controls.Add(label);
             f.AcceptButton = okButton;
             f.CancelButton = cancelButton;
             f.BackColor = Color.White;
+
+            label.Text = "Elija el rango de fechas";
+            label.AutoSize = true;
+            label.Location = new Point(40, 0);
 
             calendar.Location = new Point(40, 20);
             calendar.MaxDate = DateTime.Now;
@@ -302,22 +344,30 @@ namespace RegistrosAlumnos
         }
 
         /************************************ MÉTODOS DE KEY PRESS  ***************************************/
+        bool CedulaValida = true;        
         private void BoxCedula_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (!char.IsDigit(e.KeyChar))
-            {
-                e.Handled = true;
-            }
+            if(CedulaValida) e.Handled = true;
 
-            if (BoxCedula.Text.Length == 1 || BoxCedula.Text.Length == 5)
-            {
-                BoxCedula.AppendText("-");
-            }
+
         }
+
+        // El método valida si la tecla presionada es válida
+        private void BoxCedula_KeyDown(object sender, KeyEventArgs e)
+        {
+            KeysConverter kc = new KeysConverter();
+            string keyChar = kc.ConvertToString(e.KeyData);
+            Regex regex = new Regex("[^0-9-]+");
+            CedulaValida = regex.IsMatch(keyChar);
+            if (e.KeyCode == Keys.OemMinus) CedulaValida = false;
+            if (e.KeyCode == Keys.OemMinus && BoxCedula.Text.Length == 0) CedulaValida = true;
+        }
+
+
 
         private void BoxNombre_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (char.IsDigit(e.KeyChar))
+            if (char.IsDigit(e.KeyChar)) // No permite números en los nombres
             {
                 e.Handled = true;
             }
@@ -340,7 +390,7 @@ namespace RegistrosAlumnos
         }
 
         // *********************** EVENTOS VALIDATING *************************
-        private void recargarListBox()
+        private void recargarTabla()
         {
             inicializarTabla();
         }
@@ -376,6 +426,7 @@ namespace RegistrosAlumnos
             {
                 Log.AddLinea("Cerrando aplicación");
                 e.SuppressKeyPress = true;
+                conn.cerrarConexionBaseDatos();
                 this.Close();
                 Application.Exit();
             }
@@ -393,9 +444,11 @@ namespace RegistrosAlumnos
             BoxCedula.Text = alumno.Cedula;
             if (alumno.Jornada == "Matutino") { radMatutino.Checked = true; } else { radVesperina.Checked = true; }
             if (alumno.Semestre == "I") { radISemestre.Checked = true; } else { if (alumno.Semestre == "II") { radIISemestre.Checked = true; } else { radVerano.Checked = true; } }
+            checkNotificaciones.Checked = alumno.RecibirNot;
             comboBoxCarrera.SelectedItem = alumno.Carrera;
-           
+
         }
+
     }
 
     /**************************************************************
@@ -446,33 +499,43 @@ namespace RegistrosAlumnos
             conn = new SqlConnection(sqlConexion);
             conn.Open();
         }
+
         public void cerrarBaseDeDatos()
         {
-            conn = new SqlConnection(sqlConexion);
             conn.Close();
         }
 
         //***************** MÉTODOS CRUD ********************
-        public void anadirAlumno(Alumno almn)
+        public bool anadirAlumno(Alumno almn)
         {
-            SqlCommand comando = crearComando("INSERT INTO Alumnos( Nombre, Cedula, Carrera, Semestre, Jornada, Usuario, Contrasena, RecibirNotificaciones) VALUES ( @N, @C1,  @C2, @S, @T, @user, @contra, @not)");
-            comando.Parameters.Add("@N", SqlDbType.NVarChar, 100).Value = almn.Nombre;
-            comando.Parameters.Add("@C1", SqlDbType.NVarChar, 20).Value = almn.Cedula;
-            comando.Parameters.Add("@C2", SqlDbType.NVarChar, 50).Value = almn.Carrera;
-            comando.Parameters.Add("@S", SqlDbType.NVarChar, 20).Value = almn.Semestre;
-            comando.Parameters.Add("@T", SqlDbType.NVarChar, 20).Value = almn.Jornada;
-            comando.Parameters.Add("@user", SqlDbType.NVarChar, 50).Value = almn.Usuario;
-            comando.Parameters.Add("@contra", SqlDbType.NVarChar, 100).Value = almn.Contrasena;
-            comando.Parameters.Add("@not", SqlDbType.Bit).Value = almn.RecibirNot;
-            comando.ExecuteNonQuery();
+            try {             
+                if (!comprobarConexion()) return false; // En caso de que la conexión no este abierta entonces regresa
+                SqlCommand comando = crearComando("INSERT INTO Alumnos( Nombre, Cedula, Carrera, Semestre, Jornada, Usuario, Contrasena, RecibirNotificaciones) VALUES ( @N, @C1,  @C2, @S, @T, @user, @contra, @not)");
+                comando.Parameters.Add("@N", SqlDbType.NVarChar, 100).Value = almn.Nombre;
+                comando.Parameters.Add("@C1", SqlDbType.NVarChar, 20).Value = almn.Cedula;
+                comando.Parameters.Add("@C2", SqlDbType.NVarChar, 50).Value = almn.Carrera;
+                comando.Parameters.Add("@S", SqlDbType.NVarChar, 20).Value = almn.Semestre;
+                comando.Parameters.Add("@T", SqlDbType.NVarChar, 20).Value = almn.Jornada;
+                comando.Parameters.Add("@user", SqlDbType.NVarChar, 50).Value = almn.Usuario;
+                comando.Parameters.Add("@contra", SqlDbType.NVarChar, 100).Value = almn.Contrasena;
+                comando.Parameters.Add("@not", SqlDbType.Bit).Value = almn.RecibirNot;
+                comando.ExecuteNonQuery();
+                return true;
+            }catch(Exception e)
+            {
+                throw;
+            }
+
         }
-        public void eliminarAlumno(String ced)
+        public bool eliminarAlumno(String ced)
         {
             try
             {
+                if (!comprobarConexion()) return false; // En caso de que la conexión no este abierta entonces regresa
                 SqlCommand comando = crearComando("Delete from Alumnos where Cedula = @ced;");
                 comando.Parameters.Add("@ced",SqlDbType.NVarChar, 255).Value = ced;
                 comando.ExecuteNonQuery();
+                return true;
             }
             catch
             {
@@ -481,6 +544,38 @@ namespace RegistrosAlumnos
 
         }
 
+        public bool modificarAlumno(Alumno almn)
+        {
+            try
+            {
+                if (!comprobarConexion()) return false; // En caso de que la conexión no este abierta entonces regresa
+                SqlCommand comando = crearComando(" UPDATE Alumnos " +
+                    "SET  Nombre = @N, Carrera = @C, Semestre = @S, Jornada = @T, Usuario = @user, Contrasena = @contra, RecibirNotificaciones = @not " +
+                    "where cedula = @ced;");
+                comando.Parameters.Add("@N", SqlDbType.NVarChar, 100).Value = almn.Nombre;
+                comando.Parameters.Add("@ced", SqlDbType.NVarChar, 20).Value = almn.Cedula;
+                comando.Parameters.Add("@C", SqlDbType.NVarChar, 50).Value = almn.Carrera;
+                comando.Parameters.Add("@S", SqlDbType.NVarChar, 20).Value = almn.Semestre;
+                comando.Parameters.Add("@T", SqlDbType.NVarChar, 20).Value = almn.Jornada;
+                comando.Parameters.Add("@user", SqlDbType.NVarChar, 50).Value = almn.Usuario;
+                comando.Parameters.Add("@contra", SqlDbType.NVarChar, 100).Value = almn.Contrasena;
+                comando.Parameters.Add("@not", SqlDbType.Bit).Value = almn.RecibirNot;
+                string query = comando.CommandText;
+
+                foreach (SqlParameter p in comando.Parameters)
+                {
+                    query = query.Replace(p.ParameterName, p.Value.ToString());
+                }
+
+                comando.ExecuteNonQuery();
+                return true;
+            }catch(Exception e)
+            {
+                throw;
+            }
+        }
+
+        // Obtiene la lista de todos los alumnos(utiliza una versión con menos datos de los alumnos)
         public List<AlumnoLista> obtenerAlumnos()
         {
             SqlCommand comando = crearComando("select * from Alumnos;");
@@ -493,7 +588,7 @@ namespace RegistrosAlumnos
 
             return lista;
         }
-
+        // Obtiene un alumno según su cédula
         public Alumno obtenerAlumno(string cedula)
         {
             SqlCommand comando = crearComando("select * from Alumnos where Cedula = @ced;");
@@ -502,6 +597,7 @@ namespace RegistrosAlumnos
             reader.Read();
             return new Alumno(reader.GetInt32(0).ToString(), reader.GetString(1), reader.GetString(2), reader.GetString(3), reader.GetString(4), reader.GetString(5), reader.GetString(6), reader.GetString(7), reader.GetBoolean(8));
         }
+
         public bool existeEstudiante(string cedula)
         {
             SqlCommand comando = crearComando("select * from Alumnos where Cedula = @ced;");
@@ -514,29 +610,7 @@ namespace RegistrosAlumnos
             return false;
         }
 
-        public void modificarAlumno(Alumno almn)
-        {
-            SqlCommand comando = crearComando(" UPDATE Alumnos " +
-                "SET  Nombre = @N, Carrera = @C, Semestre = @S, Jornada = @T, Usuario = @user, Contrasena = @contra, RecibirNotificaciones = @not " +
-                "where cedula = @ced;");
-            comando.Parameters.Add("@N", SqlDbType.NVarChar, 100).Value = almn.Nombre;
-            comando.Parameters.Add("@ced", SqlDbType.NVarChar, 20).Value = almn.Cedula;
-            comando.Parameters.Add("@C", SqlDbType.NVarChar, 50).Value = almn.Carrera;
-            comando.Parameters.Add("@S", SqlDbType.NVarChar, 20).Value = almn.Semestre;
-            comando.Parameters.Add("@T", SqlDbType.NVarChar, 20).Value = almn.Jornada;
-            comando.Parameters.Add("@user", SqlDbType.NVarChar, 50).Value = almn.Usuario;
-            comando.Parameters.Add("@contra", SqlDbType.NVarChar, 100).Value = almn.Contrasena;
-            comando.Parameters.Add("@not", SqlDbType.Bit).Value = almn.RecibirNot;
-            string query = comando.CommandText;
 
-            foreach (SqlParameter p in comando.Parameters)
-            {
-                query = query.Replace(p.ParameterName, p.Value.ToString());
-            }
-            Debug.WriteLine(query);
-            
-            comando.ExecuteNonQuery();
-        }
 
         //***************** MÉTODOS REPORTES ********************
         public void obtenerReporteGeneral(ReportViewer rv)
@@ -583,7 +657,10 @@ namespace RegistrosAlumnos
 
         public SqlCommand crearComando(String comando) { return new SqlCommand(comando, conn); }
 
-
+        internal void cerrarConexionBaseDatos()
+        {
+            throw new NotImplementedException();
+        }
     }
 
     /**************************************************************

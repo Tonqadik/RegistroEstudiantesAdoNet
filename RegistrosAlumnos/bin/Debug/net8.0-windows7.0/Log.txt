@@ -1,2 +1,6 @@
-11/25/2025 2:01:03 PM -INFO-  Programa iniciado
-11/25/2025 2:01:04 PM -INFO-  Tabla grid de estudiantes inicializada
+11/25/2025 7:43:07 PM -INFO-  Programa iniciado
+11/25/2025 7:43:08 PM -INFO-  Tabla grid de estudiantes inicializada
+11/25/2025 7:43:12 PM -INFO-  Iniciando comprobaciones de los campos
+11/25/2025 7:43:12 PM -WARN-  Error al guardar estudiante, hay campos vacíos
+11/25/2025 7:43:16 PM -INFO-  Iniciando comprobaciones de los campos
+11/25/2025 7:43:16 PM -INFO-  Estudiante guardado

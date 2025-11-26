@@ -135,3 +135,4 @@ C:\c#proyectos\RegistroEstudiantesAdoNet\RegistrosAlumnos\bin\Debug\net8.0-windo
 C:\c#proyectos\RegistroEstudiantesAdoNet\RegistrosAlumnos\bin\Debug\net8.0-windows7.0\tr\System.ServiceModel.Primitives.resources.dll
 C:\c#proyectos\RegistroEstudiantesAdoNet\RegistrosAlumnos\bin\Debug\net8.0-windows7.0\zh-Hans\System.ServiceModel.Primitives.resources.dll
 C:\c#proyectos\RegistroEstudiantesAdoNet\RegistrosAlumnos\bin\Debug\net8.0-windows7.0\zh-Hant\System.ServiceModel.Primitives.resources.dll
+C:\c#proyectos\RegistroEstudiantesAdoNet\RegistrosAlumnos\obj\Debug\net8.0-windows7.0\RegistrosAlumnos.sourcelink.json
