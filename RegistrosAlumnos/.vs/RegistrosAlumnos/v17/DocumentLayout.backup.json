@@ -3,10 +3,6 @@
   "WorkspaceRootPath": "C:\\c#proyectos\\RegistroEstudiantesAdoNet\\RegistrosAlumnos\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{F496E905-5609-4B3F-9209-100E65FC3579}|RegistrosAlumnos.csproj|c:\\c#proyectos\\registroestudiantesadonet\\registrosalumnos\\reportealumno.rdlc||{46F6D2A1-5E86-4080-A799-01F3D0E23796}",
-      "RelativeMoniker": "D:0:0:{F496E905-5609-4B3F-9209-100E65FC3579}|RegistrosAlumnos.csproj|solutionrelative:reportealumno.rdlc||{46F6D2A1-5E86-4080-A799-01F3D0E23796}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{F496E905-5609-4B3F-9209-100E65FC3579}|RegistrosAlumnos.csproj|c:\\c#proyectos\\registroestudiantesadonet\\registrosalumnos\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{F496E905-5609-4B3F-9209-100E65FC3579}|RegistrosAlumnos.csproj|solutionrelative:form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -22,7 +18,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Bookmark",
@@ -30,39 +26,28 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "ReporteAlumno.rdlc [Design]",
-              "DocumentMoniker": "C:\\c#proyectos\\RegistroEstudiantesAdoNet\\RegistrosAlumnos\\ReporteAlumno.rdlc",
-              "RelativeDocumentMoniker": "ReporteAlumno.rdlc",
-              "ToolTip": "C:\\c#proyectos\\RegistroEstudiantesAdoNet\\RegistrosAlumnos\\ReporteAlumno.rdlc [Design]",
-              "RelativeToolTip": "ReporteAlumno.rdlc [Design]",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001755|",
-              "WhenOpened": "2025-11-26T01:43:51.261Z",
-              "EditorCaption": " [Design]"
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "Form1.cs",
-              "DocumentMoniker": "C:\\c#proyectos\\RegistroEstudiantesAdoNet\\RegistrosAlumnos\\Form1.cs",
-              "RelativeDocumentMoniker": "Form1.cs",
-              "ToolTip": "C:\\c#proyectos\\RegistroEstudiantesAdoNet\\RegistrosAlumnos\\Form1.cs",
-              "RelativeToolTip": "Form1.cs",
-              "ViewState": "AgIAABIBAAAAAAAAAAA6wCQBAAAiAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-25T21:05:04.757Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
               "Title": "Form1.cs [Design]",
               "DocumentMoniker": "C:\\c#proyectos\\RegistroEstudiantesAdoNet\\RegistrosAlumnos\\Form1.cs",
               "RelativeDocumentMoniker": "Form1.cs",
               "ToolTip": "C:\\c#proyectos\\RegistroEstudiantesAdoNet\\RegistrosAlumnos\\Form1.cs [Design]",
               "RelativeToolTip": "Form1.cs [Design]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-25T20:32:14.979Z"
+              "WhenOpened": "2025-12-03T12:42:57.752Z",
+              "EditorCaption": " [Design]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Form1.cs",
+              "DocumentMoniker": "C:\\c#proyectos\\RegistroEstudiantesAdoNet\\RegistrosAlumnos\\Form1.cs",
+              "RelativeDocumentMoniker": "Form1.cs",
+              "ToolTip": "C:\\c#proyectos\\RegistroEstudiantesAdoNet\\RegistrosAlumnos\\Form1.cs",
+              "RelativeToolTip": "Form1.cs",
+              "ViewState": "AgIAANwBAAAAAAAAAAAQwOUBAABbAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-01T15:12:22.861Z",
+              "EditorCaption": ""
             }
           ]
         }

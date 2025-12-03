@@ -472,17 +472,22 @@
               <TextRuns>
                 <TextRun>
                   <Value>Reporte del alumno</Value>
-                  <Style />
+                  <Style>
+                    <FontFamily>Gill Sans MT</FontFamily>
+                    <FontSize>12pt</FontSize>
+                    <FontWeight>SemiBold</FontWeight>
+                  </Style>
                 </TextRun>
               </TextRuns>
-              <Style />
+              <Style>
+                <TextAlign>Center</TextAlign>
+              </Style>
             </Paragraph>
           </Paragraphs>
           <rd:DefaultName>Textbox1</rd:DefaultName>
           <Top>0.10222in</Top>
-          <Left>1.79666in</Left>
           <Height>0.25in</Height>
-          <Width>1.80833in</Width>
+          <Width>5.83833in</Width>
           <Style>
             <Border>
               <Style>None</Style>
@@ -508,8 +513,7 @@
             </Paragraph>
           </Paragraphs>
           <rd:DefaultName>Textbox4</rd:DefaultName>
-          <Top>0.13556in</Top>
-          <Left>4.655in</Left>
+          <Left>4.77166in</Left>
           <Height>0.25in</Height>
           <Width>1.06667in</Width>
           <ZIndex>1</ZIndex>

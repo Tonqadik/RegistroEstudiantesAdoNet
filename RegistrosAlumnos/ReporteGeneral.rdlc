@@ -447,17 +447,22 @@
               <TextRuns>
                 <TextRun>
                   <Value>Lista de estudiantes</Value>
-                  <Style />
+                  <Style>
+                    <FontFamily>Gill Sans MT</FontFamily>
+                    <FontSize>12pt</FontSize>
+                    <FontWeight>SemiBold</FontWeight>
+                  </Style>
                 </TextRun>
               </TextRuns>
-              <Style />
+              <Style>
+                <TextAlign>Center</TextAlign>
+              </Style>
             </Paragraph>
           </Paragraphs>
           <rd:DefaultName>Textbox1</rd:DefaultName>
-          <Top>0.22777in</Top>
-          <Left>2.305in</Left>
-          <Height>0.25in</Height>
-          <Width>1.63334in</Width>
+          <Top>0.16667in</Top>
+          <Height>0.3111in</Height>
+          <Width>6.5in</Width>
           <Style>
             <Border>
               <Style>None</Style>
@@ -483,7 +488,6 @@
             </Paragraph>
           </Paragraphs>
           <rd:DefaultName>Textbox4</rd:DefaultName>
-          <Top>0.24167in</Top>
           <Left>5.35in</Left>
           <Height>0.25in</Height>
           <Width>1.15in</Width>

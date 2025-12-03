@@ -39,11 +39,9 @@
             label6 = new Label();
             flowLayoutPanel7 = new FlowLayoutPanel();
             flowLayoutPanel9 = new FlowLayoutPanel();
-            label9 = new Label();
             label13 = new Label();
             label12 = new Label();
             flowLayoutPanel10 = new FlowLayoutPanel();
-            BoxID = new TextBox();
             BoxUsuario = new TextBox();
             BoxContrasena = new TextBox();
             flowLayoutPanel12 = new FlowLayoutPanel();
@@ -170,7 +168,7 @@
             flowLayoutPanel11.Controls.Add(flowLayoutPanel7);
             flowLayoutPanel11.Location = new Point(3, 3);
             flowLayoutPanel11.Name = "flowLayoutPanel11";
-            flowLayoutPanel11.Size = new Size(297, 124);
+            flowLayoutPanel11.Size = new Size(297, 110);
             flowLayoutPanel11.TabIndex = 2;
             // 
             // label6
@@ -188,38 +186,26 @@
             // 
             flowLayoutPanel7.Controls.Add(flowLayoutPanel9);
             flowLayoutPanel7.Controls.Add(flowLayoutPanel10);
-            flowLayoutPanel7.FlowDirection = FlowDirection.TopDown;
             flowLayoutPanel7.Location = new Point(3, 23);
             flowLayoutPanel7.Name = "flowLayoutPanel7";
-            flowLayoutPanel7.Size = new Size(247, 162);
+            flowLayoutPanel7.Size = new Size(294, 101);
             flowLayoutPanel7.TabIndex = 1;
             // 
             // flowLayoutPanel9
             // 
             flowLayoutPanel9.AutoSize = true;
-            flowLayoutPanel9.Controls.Add(label9);
             flowLayoutPanel9.Controls.Add(label13);
             flowLayoutPanel9.Controls.Add(label12);
             flowLayoutPanel9.FlowDirection = FlowDirection.TopDown;
             flowLayoutPanel9.Location = new Point(3, 3);
             flowLayoutPanel9.Name = "flowLayoutPanel9";
-            flowLayoutPanel9.Size = new Size(94, 86);
+            flowLayoutPanel9.Size = new Size(94, 64);
             flowLayoutPanel9.TabIndex = 0;
-            // 
-            // label9
-            // 
-            label9.AutoSize = true;
-            label9.Location = new Point(3, 0);
-            label9.Name = "label9";
-            label9.Padding = new Padding(0, 4, 0, 0);
-            label9.Size = new Size(24, 22);
-            label9.TabIndex = 3;
-            label9.Text = "ID";
             // 
             // label13
             // 
             label13.AutoSize = true;
-            label13.Location = new Point(3, 22);
+            label13.Location = new Point(3, 0);
             label13.Name = "label13";
             label13.Padding = new Padding(0, 14, 0, 0);
             label13.Size = new Size(64, 32);
@@ -229,7 +215,7 @@
             // label12
             // 
             label12.AutoSize = true;
-            label12.Location = new Point(3, 54);
+            label12.Location = new Point(3, 32);
             label12.Name = "label12";
             label12.Padding = new Padding(0, 14, 0, 0);
             label12.Size = new Size(88, 32);
@@ -239,28 +225,18 @@
             // flowLayoutPanel10
             // 
             flowLayoutPanel10.AutoSize = true;
-            flowLayoutPanel10.Controls.Add(BoxID);
             flowLayoutPanel10.Controls.Add(BoxUsuario);
             flowLayoutPanel10.Controls.Add(BoxContrasena);
             flowLayoutPanel10.FlowDirection = FlowDirection.TopDown;
             flowLayoutPanel10.Location = new Point(103, 3);
             flowLayoutPanel10.Name = "flowLayoutPanel10";
-            flowLayoutPanel10.Size = new Size(131, 93);
+            flowLayoutPanel10.Size = new Size(131, 62);
             flowLayoutPanel10.TabIndex = 1;
-            // 
-            // BoxID
-            // 
-            BoxID.BorderStyle = BorderStyle.FixedSingle;
-            BoxID.Location = new Point(3, 3);
-            BoxID.Name = "BoxID";
-            BoxID.ReadOnly = true;
-            BoxID.Size = new Size(125, 25);
-            BoxID.TabIndex = 3;
             // 
             // BoxUsuario
             // 
             BoxUsuario.BorderStyle = BorderStyle.FixedSingle;
-            BoxUsuario.Location = new Point(3, 34);
+            BoxUsuario.Location = new Point(3, 3);
             BoxUsuario.Name = "BoxUsuario";
             BoxUsuario.ReadOnly = true;
             BoxUsuario.Size = new Size(125, 25);
@@ -269,7 +245,7 @@
             // BoxContrasena
             // 
             BoxContrasena.BorderStyle = BorderStyle.FixedSingle;
-            BoxContrasena.Location = new Point(3, 65);
+            BoxContrasena.Location = new Point(3, 34);
             BoxContrasena.MaxLength = 12;
             BoxContrasena.Name = "BoxContrasena";
             BoxContrasena.PasswordChar = '*';
@@ -282,7 +258,7 @@
             flowLayoutPanel12.Controls.Add(flowLayoutPanel5);
             flowLayoutPanel12.Controls.Add(flowLayoutPanel6);
             flowLayoutPanel12.FlowDirection = FlowDirection.TopDown;
-            flowLayoutPanel12.Location = new Point(3, 133);
+            flowLayoutPanel12.Location = new Point(3, 119);
             flowLayoutPanel12.Name = "flowLayoutPanel12";
             flowLayoutPanel12.Size = new Size(302, 507);
             flowLayoutPanel12.TabIndex = 3;
@@ -847,11 +823,9 @@
         private ToolStripMenuItem salirMenuToolbarItem;
         private FlowLayoutPanel flowLayoutPanel7;
         private FlowLayoutPanel flowLayoutPanel9;
-        private Label label9;
         private Label label13;
         private Label label12;
         private FlowLayoutPanel flowLayoutPanel10;
-        private TextBox BoxID;
         private TextBox BoxUsuario;
         private TextBox BoxContrasena;
         private FlowLayoutPanel flowLayoutPanel4;

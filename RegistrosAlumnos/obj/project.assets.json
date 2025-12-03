@@ -3335,7 +3335,7 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\user1\\.nuget\\packages\\": {},
+    "C:\\Users\\juan\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
@@ -3344,14 +3344,14 @@
       "projectUniqueName": "C:\\c#proyectos\\RegistroEstudiantesAdoNet\\RegistrosAlumnos\\RegistrosAlumnos.csproj",
       "projectName": "RegistrosAlumnos",
       "projectPath": "C:\\c#proyectos\\RegistroEstudiantesAdoNet\\RegistrosAlumnos\\RegistrosAlumnos.csproj",
-      "packagesPath": "C:\\Users\\user1\\.nuget\\packages\\",
+      "packagesPath": "C:\\Users\\juan\\.nuget\\packages\\",
       "outputPath": "C:\\c#proyectos\\RegistroEstudiantesAdoNet\\RegistrosAlumnos\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\user1\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\juan\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],

@@ -335,7 +335,6 @@
                             <PaddingBottom>2pt</PaddingBottom>
                           </Style>
                         </Textbox>
-                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                   </TablixCells>
@@ -389,18 +388,23 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>Lista de estudiantes por carrera</Value>
-                      <Style />
+                      <Value>="Lista de estudiantes de " + Parameters!ReportParameter1.Value</Value>
+                      <Style>
+                        <FontFamily>Gill Sans MT</FontFamily>
+                        <FontSize>12pt</FontSize>
+                        <FontWeight>SemiBold</FontWeight>
+                      </Style>
                     </TextRun>
                   </TextRuns>
-                  <Style />
+                  <Style>
+                    <TextAlign>Center</TextAlign>
+                  </Style>
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox1</rd:DefaultName>
               <Top>0.18834in</Top>
-              <Left>1.455in</Left>
-              <Height>0.25in</Height>
-              <Width>2.04167in</Width>
+              <Height>0.30555in</Height>
+              <Width>6.5in</Width>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -426,41 +430,10 @@
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox4</rd:DefaultName>
-              <Top>0.18834in</Top>
               <Left>5.35in</Left>
               <Height>0.25in</Height>
               <Width>1.15in</Width>
               <ZIndex>1</ZIndex>
-              <Style>
-                <Border>
-                  <Style>None</Style>
-                </Border>
-                <PaddingLeft>2pt</PaddingLeft>
-                <PaddingRight>2pt</PaddingRight>
-                <PaddingTop>2pt</PaddingTop>
-                <PaddingBottom>2pt</PaddingBottom>
-              </Style>
-            </Textbox>
-            <Textbox Name="Textbox4">
-              <CanGrow>true</CanGrow>
-              <KeepTogether>true</KeepTogether>
-              <Paragraphs>
-                <Paragraph>
-                  <TextRuns>
-                    <TextRun>
-                      <Value>=Parameters!ReportParameter1.Value</Value>
-                      <Style />
-                    </TextRun>
-                  </TextRuns>
-                  <Style />
-                </Paragraph>
-              </Paragraphs>
-              <rd:DefaultName>Textbox4</rd:DefaultName>
-              <Top>0.18834in</Top>
-              <Left>3.49667in</Left>
-              <Height>0.25in</Height>
-              <Width>1.78389in</Width>
-              <ZIndex>2</ZIndex>
               <Style>
                 <Border>
                   <Style>None</Style>

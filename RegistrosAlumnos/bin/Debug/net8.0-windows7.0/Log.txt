@@ -1,6 +1,14 @@
-11/25/2025 7:43:07 PM -INFO-  Programa iniciado
-11/25/2025 7:43:08 PM -INFO-  Tabla grid de estudiantes inicializada
-11/25/2025 7:43:12 PM -INFO-  Iniciando comprobaciones de los campos
-11/25/2025 7:43:12 PM -WARN-  Error al guardar estudiante, hay campos vacíos
-11/25/2025 7:43:16 PM -INFO-  Iniciando comprobaciones de los campos
-11/25/2025 7:43:16 PM -INFO-  Estudiante guardado
+12/3/2025 10:00:00 AM -INFO-  Programa iniciado
+12/3/2025 10:00:00 AM -INFO-  Tabla grid de estudiantes inicializada
+12/3/2025 10:00:04 AM -INFO-  Forms limpiado
+12/3/2025 10:00:06 AM -INFO-  Forms limpiado
+12/3/2025 10:00:09 AM -INFO-  Forms limpiado
+12/3/2025 10:00:11 AM -INFO-  Forms limpiado
+12/3/2025 10:00:13 AM -INFO-  Forms limpiado
+12/3/2025 10:00:15 AM -INFO-  Forms limpiado
+12/3/2025 10:00:18 AM -INFO-  Forms limpiado
+12/3/2025 10:00:19 AM -INFO-  Forms limpiado
+12/3/2025 10:00:20 AM -INFO-  Forms limpiado
+12/3/2025 10:00:22 AM -INFO-  Forms limpiado
+12/3/2025 10:00:23 AM -INFO-  Forms limpiado
+12/3/2025 10:00:25 AM -INFO-  Forms limpiado

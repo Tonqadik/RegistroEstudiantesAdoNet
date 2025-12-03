@@ -22,6 +22,13 @@ namespace RegistrosAlumnos
     }
     public partial class Form1 : Form
     {
+        public enum Estado
+        {
+            DEFAULT,
+            EDITANDO
+        }
+
+        Estado estadoForms = Estado.DEFAULT;
         ConeccionSql conn = new ConeccionSql();
         List<string> cedulas = new List<string>(); // La lista de cedulas es utilizada para buscar un estudiante en especifico si se selecciona una fila
         string codigoProfesor = "admin123";
@@ -40,9 +47,18 @@ namespace RegistrosAlumnos
             this.KeyPreview = true; // Permite que los eventos primeros pasen por el forms
 
             // Conexión al servidor SQl
-            conn.conectarBaseDeDatos();
-            BoxID.Text = (conn.obtenerAlumnos().Count + 1).ToString();
-            inicializarTabla();
+            if (conn.conectarBaseDeDatos())
+            {
+                inicializarTabla();
+            }
+            else
+            {
+                MessageBox.Show("No se ha podido conectar a la base de datos.\nCerrando aplicación...", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Log.AddLinea("Cerrando aplicación");
+                Application.Exit();
+            }
+            
+
         }
 
         //**************************  MENSAJES DEL SISTEMA *************************
@@ -94,11 +110,17 @@ namespace RegistrosAlumnos
         private void limpiarForm()
         {
             Log.AddLinea("Forms limpiado");
-            BoxID.Clear();
             BoxUsuario.Clear();
             BoxContrasena.Clear();
             BoxNombre.Clear();
             BoxCedula.Clear();
+            radMatutino.Checked = false;
+            radVesperina.Checked = false;
+            radISemestre.Checked = false;
+            radIISemestre.Checked = false;
+            radVerano.Checked = false;
+            estadoForms = Estado.DEFAULT;
+
         }
         private void BtnNuevo_Click(object sender, EventArgs e)
         {
@@ -108,16 +130,19 @@ namespace RegistrosAlumnos
         private void BtnEditar_Click(object sender, EventArgs e)
         {
             editarAlumno();
+            recargarTabla();
         }
 
         private void BtnGuardar_Click(object sender, EventArgs e)
         {
             guardarAlumno();
+            recargarTabla();
         }
 
         private void BtnEliminar_Click(object sender, EventArgs e)
         {
             eliminarAlumno();
+            recargarTabla();
         }
 
         // Toolbar para salir de la app
@@ -167,15 +192,16 @@ namespace RegistrosAlumnos
         {
             try {
                 // Válida que no haya campos vacíos
-                if (!crearInputBoxValidar()) { return; } 
-                var id = conn.obtenerAlumnos().Count; 
+                if (!crearInputBoxValidar()) { return; }
+                // En caso de que el estudiante ya exista, entonces da un mensaje de error
+                if (conn.existeEstudiante(BoxCedula.Text)) { MessageBox.Show("Ya hay un estudiante con está cédula.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning); return; }
+
                 string jornada = radMatutino.Checked ? "Matutino" : "Vesperino"; // Obtiene la jornada seleccionada
                 string semestre = "";
                 if (radISemestre.Checked) { semestre = "I"; } else { if (radIISemestre.Checked) { semestre = "II"; } else { semestre = "Verano"; } } // Obtiene el semestre seleccionado
-                BoxID.Text = (id + 1).ToString(); // Cambia el id al siguiente
 
                 // Se crea un objeto de alumno el cuál se envia al Ado.Net
-                Alumno al = new(id.ToString(), BoxNombre.Text, BoxCedula.Text, comboBoxCarrera.Text, semestre, jornada, BoxUsuario.Text, BoxContrasena.Text, checkNotificaciones.Checked);
+                Alumno al = new(BoxNombre.Text, BoxCedula.Text, comboBoxCarrera.Text, semestre, jornada, BoxUsuario.Text, BoxContrasena.Text, checkNotificaciones.Checked);
                 conn.anadirAlumno(al); 
                 cedulas.Add(al.Cedula);
                 MessageBox.Show("Estudiante guardado.", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -230,7 +256,7 @@ namespace RegistrosAlumnos
                 if (radISemestre.Checked) { semestre = "I"; } else { if (radIISemestre.Checked) { semestre = "II"; } else { semestre = "Verano"; } }
                 
                 // Se crea un objeto de alumno el cuál se envia al Ado.Net
-                Alumno al = new("", BoxNombre.Text, BoxCedula.Text, comboBoxCarrera.Text, semestre, jornada, BoxUsuario.Text, BoxContrasena.Text, checkNotificaciones.Checked);
+                Alumno al = new(BoxNombre.Text, BoxCedula.Text, comboBoxCarrera.Text, semestre, jornada, BoxUsuario.Text, BoxContrasena.Text, checkNotificaciones.Checked);
                 // Se envía el objeto al Ado.Net
                 conn.modificarAlumno(al);
                 MessageBox.Show("Se modifico el estudiante.", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -275,31 +301,48 @@ namespace RegistrosAlumnos
         private void rangoFechasToolStripMenuItem_Click(object sender, EventArgs e)
         {
             // Se crea un calendarDialog personalizado
-            MonthCalendar calendar = new MonthCalendar();
+            DateTimePicker date1 = new DateTimePicker();
+            DateTimePicker date2 = new DateTimePicker();
             Button okButton = new Button();
             Button cancelButton = new Button();
             Label label = new Label();
+            Label labelDate1 = new Label();
+            Label labelDate2 = new Label();
             Form f = new Form();
             f.Size = new Size(350, 350);
-            f.Controls.Add(calendar);
+            f.Controls.Add(date1);
+            f.Controls.Add(date2);
             f.Controls.Add(okButton);
             f.Controls.Add(cancelButton);
             f.Controls.Add(label);
+            f.Controls.Add(labelDate1);
+            f.Controls.Add(labelDate2);
             f.AcceptButton = okButton;
             f.CancelButton = cancelButton;
             f.BackColor = Color.White;
+           
 
             label.Text = "Elija el rango de fechas";
             label.AutoSize = true;
-            label.Location = new Point(40, 0);
+            label.Location = new Point(30, 0);
 
-            calendar.Location = new Point(40, 20);
-            calendar.MaxDate = DateTime.Now;
-            calendar.MinDate = new DateTime(1990, 1, 1);
-            calendar.ShowToday = false;
-            calendar.MaxSelectionCount = 30;
+            labelDate1.Text = "De";
+            labelDate1.AutoSize = true;
+            labelDate1.Location = new Point(30, 50);
 
-            okButton.Location = new Point(40, 240);
+            labelDate2.Text = "Hasta";
+            labelDate2.AutoSize = true;
+            labelDate2.Location = new Point(30, 100);
+
+            date1.Location = new Point(80, 50);
+            date1.MaxDate = DateTime.Now;
+            date1.MinDate = new DateTime(1990, 1, 1);
+
+            date2.Location = new Point(80, 100);
+            date2.MaxDate = DateTime.Now;
+            date2.MinDate = new DateTime(1990, 1, 1);
+
+            okButton.Location = new Point(30, 240);
             okButton.Text = "Ok";
             okButton.AutoSize = true;
             okButton.BackColor = Color.LightBlue;
@@ -316,9 +359,9 @@ namespace RegistrosAlumnos
             var result = f.ShowDialog();
 
 
-            if (result == DialogResult.OK)
-            {
-                conn.obtenerReporteFecha(null, calendar.SelectionRange.Start.ToShortDateString(), calendar.SelectionRange.End.ToShortDateString());
+            if (result == DialogResult.OK) { 
+            
+                conn.obtenerReporteFecha(null, date1.Value.Date.ToShortDateString(), date2.Value.Date.ToShortDateString());
             }
 
         }
@@ -361,6 +404,8 @@ namespace RegistrosAlumnos
             CedulaValida = regex.IsMatch(keyChar);
             if (e.KeyCode == Keys.OemMinus) CedulaValida = false;
             if (e.KeyCode == Keys.OemMinus && BoxCedula.Text.Length == 0) CedulaValida = true;
+            if (BoxCedula.Text.EndsWith("-") && e.KeyCode == Keys.OemMinus) CedulaValida = true;
+            if (e.KeyCode == Keys.Back) CedulaValida = false;
         }
 
 
@@ -437,7 +482,20 @@ namespace RegistrosAlumnos
         private void TableGridAlumnos_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex == -1) { return; }
-            Alumno alumno = conn.obtenerAlumno(TableGridAlumnos.Rows[e.RowIndex].Cells[1].Value.ToString());
+            string ced = TableGridAlumnos.Rows[e.RowIndex].Cells[1].Value.ToString();
+            // Permite la deselección y cambiar el estado dependiendo si está editando o no
+            if (TableGridAlumnos.Rows[e.RowIndex].Cells[1].Selected && estadoForms == Estado.EDITANDO)
+            {
+                estadoForms = Estado.DEFAULT;
+                limpiarForm();
+                TableGridAlumnos.Rows[e.RowIndex].Selected = false;
+                return;
+            }
+            else
+            {
+                estadoForms = Estado.EDITANDO;                
+            }
+            Alumno alumno = conn.obtenerAlumno(ced);
             BoxUsuario.Text = alumno.Usuario;
             BoxContrasena.Text = alumno.Contrasena;
             BoxNombre.Text = alumno.Nombre;
@@ -494,10 +552,18 @@ namespace RegistrosAlumnos
         SqlConnection conn;
 
 
-        public void conectarBaseDeDatos()
+        public bool conectarBaseDeDatos()
         {
-            conn = new SqlConnection(sqlConexion);
-            conn.Open();
+            try
+            {
+                conn = new SqlConnection(sqlConexion);
+                conn.Open();
+                return true;
+            }
+            catch (Exception ex) {
+                return false;
+            }
+
         }
 
         public void cerrarBaseDeDatos()
@@ -595,7 +661,7 @@ namespace RegistrosAlumnos
             comando.Parameters.Add("@ced", SqlDbType.NVarChar, 20).Value = cedula;
             using SqlDataReader reader = comando.ExecuteReader();
             reader.Read();
-            return new Alumno(reader.GetInt32(0).ToString(), reader.GetString(1), reader.GetString(2), reader.GetString(3), reader.GetString(4), reader.GetString(5), reader.GetString(6), reader.GetString(7), reader.GetBoolean(8));
+            return new Alumno(reader.GetString(1), reader.GetString(2), reader.GetString(3), reader.GetString(4), reader.GetString(5), reader.GetString(6), reader.GetString(7), reader.GetBoolean(8));
         }
 
         public bool existeEstudiante(string cedula)
@@ -748,10 +814,12 @@ namespace RegistrosAlumnos
         /*************** MÉTODOS PARA PODER GUARDAR SAVEDIALOG *************/
         private void abrirDialog(byte[] info, string fileName)
         {
-            SaveFileDialog svg = new SaveFileDialog();
-            svg.Title = "Guarda el reporte";
-            svg.FileName = $"{fileName}.pdf";
-            svg.Filter = "Pdf Files|*.pdf";
+            SaveFileDialog svg = new()
+            {
+                Title = "Guarda el reporte",
+                FileName = $"{fileName}.pdf",
+                Filter = "Pdf Files|*.pdf"
+            };
 
             if (svg.ShowDialog() == DialogResult.OK)
             {
@@ -771,9 +839,8 @@ namespace RegistrosAlumnos
 
     };
 
-    public class Alumno(string Id, string N, string C1, string C2, string S, string T, string user, string contra, bool recibirNot)
+    public class Alumno(string N, string C1, string C2, string S, string T, string user, string contra, bool recibirNot)
         {
-            public string Id { get; init; } = Id;
             public string Nombre { get; init; } = N;
             public string Cedula { get; init; } = C1;
             public string Carrera { get; init; } = C2;
